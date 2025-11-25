@@ -27,7 +27,18 @@
 
 ---
 
-### 2. 渲染路径（Rendering Path）
+### 2. URP Shader开发（NEW!）🔥
+
+| 文档 | 内容 | 适合 |
+|------|------|------|
+| [`Assets/Shaders/StandardURPShader.shader`](Assets/Shaders/StandardURPShader.shader) | 🔥 **标准URP Shader**<br>• 每一行都有详细中文注释<br>• 包含所有标准Pass<br>• 支持SRP Batcher<br>• PBR光照<br>• 可直接复制使用 | **强烈推荐⭐** |
+| [`URP_Shader_Tags_Reference.md`](URP_Shader_Tags_Reference.md) | 📖 **Tags完整参考**（30+页）<br>• 所有SubShader Tags详解<br>• 所有Pass Tags详解<br>• 完整示例<br>• 常见错误解决 | 深入学习 |
+| [`URP_Shader_Quick_Cheatsheet.md`](URP_Shader_Quick_Cheatsheet.md) | ⚡ **快速速查卡**<br>• 可打印桌面参考<br>• 最小可用模板<br>• Tags对照表<br>• 常见错误速查 | **日常开发必备⭐** |
+| [`LightMode_Migration_Guide.md`](LightMode_Migration_Guide.md) | 🔄 **Built-in迁移指南**<br>• LightMode对照表<br>• ForwardBase→UniversalForward<br>• 完整迁移示例<br>• 迁移检查清单 | Built-in迁移 |
+
+---
+
+### 3. 渲染路径（Rendering Path）
 
 | 文档 | 内容 | 适合 |
 |------|------|------|
@@ -36,7 +47,7 @@
 
 ---
 
-### 3. SRP Batcher设置（URP优化）
+### 4. SRP Batcher设置（URP优化）
 
 | 文档 | 内容 | 适合 |
 |------|------|------|
@@ -44,7 +55,7 @@
 
 ---
 
-### 4. 网络请求优化（额外内容）
+### 5. 网络请求优化（额外内容）
 
 | 文档 | 内容 | 适合 |
 |------|------|------|
@@ -107,7 +118,25 @@
 
 ---
 
-### 情况3：我想选择合适的渲染路径
+### 情况3：我想编写URP Shader 🔥
+
+```
+1. 🔥 复制模板：Assets/Shaders/StandardURPShader.shader
+   直接复制使用，每行都有详细注释
+   ↓
+2. 📖 遇到问题查阅：URP_Shader_Quick_Cheatsheet.md
+   桌面速查卡，常见错误秒解决
+   ↓
+3. 深入理解：URP_Shader_Tags_Reference.md（30分钟）
+   所有Tags的详细说明
+   ↓
+4. 如果从Built-in迁移：LightMode_Migration_Guide.md
+   完整的迁移步骤和对照表
+```
+
+---
+
+### 情况4：我想选择合适的渲染路径
 
 ```
 1. 阅读：RenderingPath_QuickReference.md（5分钟）
@@ -239,8 +268,12 @@ Week 3: 性能优化
 
 | 需求 | 查看 |
 |------|------|
+| 🔥 **标准URP Shader（每行都有注释）** | `Assets/Shaders/StandardURPShader.shader` |
+| 🔥 **Tags完整参考** | `URP_Shader_Tags_Reference.md` |
+| 🔥 **Shader快速速查卡** | `URP_Shader_Quick_Cheatsheet.md` |
+| 🔥 **Built-in迁移到URP指南** | `LightMode_Migration_Guide.md` |
 | Built-in Forward Shader | `Assets/Shaders/ForwardShaderExample.shader` |
-| URP Forward Shader | `Assets/Shaders/URPForwardShaderExample.shader` |
+| URP Forward Shader示例 | `Assets/Shaders/URPForwardShaderExample.shader` |
 | LightMode标签说明 | `RenderPass_QuickComparison.md` |
 | Pass执行顺序 | `Unity_Complete_RenderPass_Flow.md` |
 
@@ -347,6 +380,48 @@ Week 3: 性能优化
 
 ---
 
+### 🔥 Q5: 如何写一个标准的URP Shader？
+
+**A:** 
+最少需要：
+1. SubShader Tag: `"RenderPipeline" = "UniversalPipeline"`
+2. Pass Tag: `"LightMode" = "UniversalForward"`
+3. 使用HLSLPROGRAM（不是CGPROGRAM）
+4. 材质属性用`CBUFFER_START(UnityPerMaterial)`
+
+**最快方式：** 直接复制`Assets/Shaders/StandardURPShader.shader`，每行都有详细注释
+
+详见：[`URP_Shader_Quick_Cheatsheet.md`](URP_Shader_Quick_Cheatsheet.md)
+
+---
+
+### 🔥 Q6: URP的UniversalForward和Built-in的ForwardBase有什么区别？
+
+**A:**
+- **Built-in**: ForwardBase（主光源） + N个ForwardAdd（附加光源）= N+1个Pass
+- **URP**: 只有1个UniversalForward Pass，在片元着色器中循环处理所有光源
+
+**性能提升：** 
+- Pass数量减少67%+
+- DrawCall减少67%+
+- CPU开销大幅降低
+
+详见：[`LightMode_Migration_Guide.md`](LightMode_Migration_Guide.md)
+
+---
+
+### 🔥 Q7: 为什么我的URP Shader是洋红色？
+
+**A:** 最常见的2个原因：
+1. 忘记写`Tags { "RenderPipeline" = "UniversalPipeline" }`
+2. Pass的LightMode写错了（写成了`ForwardBase`而不是`UniversalForward`）
+
+**解决方案：** 检查Tags是否正确
+
+详见：[`URP_Shader_Tags_Reference.md`](URP_Shader_Tags_Reference.md) 常见错误章节
+
+---
+
 ## 📬 反馈和建议
 
 如果您发现：
@@ -360,7 +435,27 @@ Week 3: 性能优化
 
 ## 🎉 开始学习
 
-**推荐起点：**
+**根据您的需求选择起点：**
+
+### 🎨 我想学习Shader开发 🔥
+
+1. **快速上手：** [`Assets/Shaders/StandardURPShader.shader`](Assets/Shaders/StandardURPShader.shader)
+   - 完整的标准URP Shader
+   - 每一行都有详细中文注释
+   - 直接复制使用，5分钟上手
+
+2. **桌面速查：** [`URP_Shader_Quick_Cheatsheet.md`](URP_Shader_Quick_Cheatsheet.md)
+   - 可打印的快速参考卡
+   - 常见错误秒解决
+   - Tags对照表
+
+3. **深入理解：** [`URP_Shader_Tags_Reference.md`](URP_Shader_Tags_Reference.md)
+   - 所有Tags的完整说明
+   - 详细示例和最佳实践
+
+---
+
+### 📚 我想理解URP渲染流程
 
 1. 🔥 **强烈推荐：** [`URP_Detailed_Pass_Flow.md`](URP_Detailed_Pass_Flow.md)（30分钟）
    - 解答：UniversalForward Pass是什么
