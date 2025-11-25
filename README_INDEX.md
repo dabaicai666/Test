@@ -21,6 +21,7 @@
 
 | 文档 | 内容 | 适合 |
 |------|------|------|
+| [`URP_Detailed_Pass_Flow.md`](URP_Detailed_Pass_Flow.md) | 🔥 **URP超详细解析**（NEW!）<br>• ⭐ UniversalForward和不透明物体的关系<br>• ⭐ 光照计算位置详解<br>• 每个Pass的代码级实现<br>• 实际场景统计<br>• 与Built-in详细对比 | **强烈推荐** |
 | [`Unity_Complete_RenderPass_Flow.md`](Unity_Complete_RenderPass_Flow.md) | ⭐ **完整详解**（100+页）<br>• Built-in所有Pass流程<br>• URP所有Pass流程<br>• 详细代码示例<br>• 性能对比<br>• 实际场景示例 | 深入学习 |
 | [`RenderPass_QuickComparison.md`](RenderPass_QuickComparison.md) | ⚡ **快速对比**<br>• Built-in vs URP<br>• Pass对照表<br>• LightMode对照<br>• 选择指南 | 快速查阅 |
 
@@ -66,6 +67,7 @@
 
 | 脚本 | 功能 | 使用 |
 |------|------|------|
+| `URPPassFlowVisualizer.cs` | 🔥 **URP Pass流程可视化**（NEW!）<br>⭐ 解释UniversalForward的作用 | 拖到场景任意GameObject<br>运行游戏查看右侧详细流程<br>按F3切换显示 |
 | `RenderingPathExplainer.cs` | 显示渲染路径信息 | 拖到场景任意GameObject<br>运行游戏查看左上角信息 |
 | `RenderPassVisualizer.cs` | 显示Pass流程 | 拖到场景任意GameObject<br>按F2切换显示 |
 | `SRPBatcherRuntimeChecker.cs` | 检查SRP Batcher状态 | 拖到场景任意GameObject<br>按F1切换显示 |
@@ -74,14 +76,17 @@
 
 ## 🚀 快速开始指南
 
-### 情况1：我想理解Unity渲染Pass流程
+### 情况1：我想理解Unity渲染Pass流程（特别是URP）
 
 ```
-1. 阅读：RenderPass_QuickComparison.md（10分钟）
+1. 🔥 阅读：URP_Detailed_Pass_Flow.md（30分钟）
+   ⭐ 重点理解UniversalForward Pass和光照计算
    ↓
-2. Unity中打开：Tools → 渲染Pass分析工具
+2. Unity中添加：URPPassFlowVisualizer.cs到场景GameObject
+   运行游戏查看右侧实时Pass流程
    ↓
 3. 进入Play模式，打开Frame Debugger
+   查看实际的UniversalForward Pass
    ↓
 4. 深入学习：Unity_Complete_RenderPass_Flow.md（1小时+）
 ```
@@ -217,6 +222,9 @@ Week 3: 性能优化
 
 | 问题 | 查看文档 |
 |------|---------|
+| 🔥 "UniversalForward Pass是什么？" | `URP_Detailed_Pass_Flow.md` 阶段4 |
+| 🔥 "光照在哪里计算？" | `URP_Detailed_Pass_Flow.md` 核心理解 |
+| 🔥 "不透明物体怎么渲染？" | `URP_Detailed_Pass_Flow.md` 阶段4详解 |
 | "渲染流程是怎样的？" | `Unity_Complete_RenderPass_Flow.md` |
 | "Built-in和URP有什么区别？" | `RenderPass_QuickComparison.md` |
 | "如何设置渲染路径？" | `README_RenderingPath.md` 第4章 |
@@ -282,6 +290,18 @@ Week 3: 性能优化
 
 ## 💡 常见问题快速解答
 
+### 🔥 Q0: UniversalForward Pass和"渲染不透明物体"是什么关系？
+
+**A:** 它们是同一个东西！
+- "渲染不透明物体" = 渲染阶段的名称
+- "UniversalForward Pass" = 实现这个阶段的Shader Pass
+- 光照计算就在这个Pass的片元着色器中完成
+- 主光源 + 所有附加光源在一个Pass中循环处理
+
+详见：[`URP_Detailed_Pass_Flow.md`](URP_Detailed_Pass_Flow.md) 阶段4
+
+---
+
 ### Q1: Built-in Forward和URP Forward有什么本质区别？
 
 **A:** 光源处理方式不同
@@ -342,9 +362,19 @@ Week 3: 性能优化
 
 **推荐起点：**
 
-1. 🚀 **立即开始：** 打开Unity，`Tools → 渲染Pass分析工具`
-2. 📖 **快速阅读：** [`RenderPass_QuickComparison.md`](RenderPass_QuickComparison.md)（10分钟）
-3. 🎓 **深入学习：** [`Unity_Complete_RenderPass_Flow.md`](Unity_Complete_RenderPass_Flow.md)（1小时+）
+1. 🔥 **强烈推荐：** [`URP_Detailed_Pass_Flow.md`](URP_Detailed_Pass_Flow.md)（30分钟）
+   - 解答：UniversalForward Pass是什么
+   - 解答：光照在哪里计算
+   - 解答：不透明物体如何渲染
+   
+2. 🚀 **实践验证：** 
+   - 打开Unity，添加`URPPassFlowVisualizer.cs`到场景
+   - 运行游戏，查看右侧Pass流程可视化
+   - 打开Frame Debugger查看实际Pass
+
+3. 📖 **全面学习：** [`Unity_Complete_RenderPass_Flow.md`](Unity_Complete_RenderPass_Flow.md)（1小时+）
+   - Built-in和URP完整对比
+   - 所有Pass的详细解析
 
 **祝学习愉快！** 🎓
 
