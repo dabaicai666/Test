@@ -1,3 +1,16 @@
-﻿{
-	"name": "NewAssembly"
+{
+    "name": "XrealHandGesture",
+    "rootNamespace": "XrealHandGesture",
+    "references": [
+        "Unity.XR.Hands"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }
